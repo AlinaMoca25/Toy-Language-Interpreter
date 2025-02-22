@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="575.0" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.map_toylanguage_gui.HelloController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+   <children>
+      <Label fx:id="titleLabel" text="Toy Language Interpreter" />
+      <BorderPane prefHeight="303.0" prefWidth="462.0">
+         <center>
+            <ListView fx:id="programsList" prefHeight="200.0" prefWidth="444.0" BorderPane.alignment="CENTER" />
+         </center>
+      </BorderPane>
+      <Label fx:id="infoLabel" text="Click on a program to run it.">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
+   </children>
+</VBox>

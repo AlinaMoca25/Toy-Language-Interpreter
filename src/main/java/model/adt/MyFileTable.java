@@ -1,0 +1,61 @@
+package model.adt;
+
+import exception.DictException;
+import exception.MyException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class MyFileTable<K,V> implements IFileTable<K,V> {
+    private Map<K, V> map;
+
+    public MyFileTable() {
+        map = new HashMap<>();
+    }
+
+    public V get(K key) throws MyException {
+        if (!map.containsKey(key)) {
+            throw new DictException("Key not found!");
+        }
+        return map.get(key);
+    }
+
+    public void insert(K key, V value) {
+        map.put(key, value);
+    }
+
+    public boolean contains(K key) {
+        return map.containsKey(key);
+    }
+
+    public void remove(K key) throws MyException {
+        if (!map.containsKey(key)) {
+            throw new DictException("Key not found!");
+        }
+        map.remove(key);
+    }
+
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        for (K key : map.keySet()) {
+            str.append(key.toString()).append(" -> ").append(map.get(key));
+            str.append("\n");
+        }
+        return str.toString();
+    }
+
+    public int getSize() {
+        return map.size();
+    }
+
+    @Override
+    public void update(K id, V value) {
+        map.put(id, value);
+    }
+
+    public List<V> values() {
+        return new ArrayList<V>(map.values());
+    }
+}
