@@ -27,6 +27,7 @@ import repository.IRepository;
 import repository.Repository;
 import view.heapView;
 import view.lockView;
+import view.semaphoreView;
 import view.symTableView;
 
 import java.awt.event.MouseEvent;
@@ -90,10 +91,26 @@ public class MainController {
     @FXML
     private TableColumn<lockView, String> lockValueColumn;
 
+    @FXML
+    private TableView<semaphoreView> semaphoreTable;
+
+    @FXML
+    private TableColumn<semaphoreView, Integer> semLocationColumn;
+
+    @FXML
+    private TableColumn<semaphoreView, Integer> semNr1Column;
+
+    @FXML
+    private TableColumn<semaphoreView, Integer> semNr2Column;
+
+    @FXML
+    private TableColumn<semaphoreView, String> semProgramListColumn;
+
     public void initialize() {
 
         IMyStack<IStatement> stack = new MyStack<>(); stack.push(this.statement);
-        ProgramState prgState = new ProgramState(stack, new MyMap<>(), new MyList<>(), new MyMap<>(), new MyHeap<>(), new LockTable<>());
+        ProgramState prgState = new ProgramState(stack, new MyMap<>(), new MyList<>(), new MyMap<>(), new MyHeap<>(),
+                new LockTable<>(), new SemaphoreTable<>());
         IRepository repo = new Repository("out.txt"); repo.add(prgState);
 
         this.controller = new Controller(repo);
@@ -105,6 +122,10 @@ public class MainController {
         symTableVarValColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
         lockLocationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
         lockValueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
+        semLocationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
+        semNr1Column.setCellValueFactory(new PropertyValueFactory<>("nr1"));
+        semNr2Column.setCellValueFactory(new PropertyValueFactory<>("nr2"));
+        semProgramListColumn.setCellValueFactory(new PropertyValueFactory<>("programStates"));
 
 //        prgStatesIdList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 //
@@ -236,6 +257,23 @@ public class MainController {
         lockTable.setItems(lockList);
     }
 
+    private void setSemaphoreTable() throws MyException {
+        ObservableList<semaphoreView> semaphoreList = FXCollections.observableArrayList();
+        ProgramState state = getCurrentState();
+        ISemaphoreTable<Integer, SemaphoreData> semTable = state.getSemaphoreTable();
+
+        for(Integer location : semTable.getContent().keySet()) {
+            String ids = "";
+            for(int p: semTable.get(location).getProgramStates()) {
+                ids += p + " ";
+            }
+            semaphoreList.add(new semaphoreView(location, semTable.get(location).getNr1(),
+                    semTable.get(location).getNr2(), ids));
+        }
+        semaphoreTable.setItems(semaphoreList);
+    }
+
+
     private void updateAll() throws MyException {
         setHeapTable();
         setOutList();
@@ -244,6 +282,7 @@ public class MainController {
         setSymTable();
         setExeStack();
         setLockTable();
+        setSemaphoreTable();
     }
 
 }

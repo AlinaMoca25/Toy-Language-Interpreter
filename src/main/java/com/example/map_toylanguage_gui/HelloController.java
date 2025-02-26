@@ -226,6 +226,29 @@ public class HelloController { //<=> view + main?
                                                     ))
                                 )))))));
 
+    IStatement ex15 = new CompoundStatement(new VarDeclarationStatement("v", new IntType()),
+            new CompoundStatement(new AssignmentStatement("v", new ValueExpression(new IntValue(1))),
+                    new CompoundStatement(new ForkStatement(new AssignmentStatement("v", new ValueExpression(new IntValue(2)))),
+                            new ForkStatement(new AssignmentStatement("v", new ValueExpression(new IntValue(3)))))));
+
+    IStatement ex16 = new CompoundStatement(new VarDeclarationStatement("v1", new RefType(0, new IntType())),
+            new CompoundStatement(new VarDeclarationStatement("cnt", new IntType()),
+                    new CompoundStatement(new HeapAllocation(new StringValue("v1"), new ValueExpression(new IntValue(2))),
+                            new CompoundStatement(new newSemaphoreStatement(new StringValue("cnt"), new HeapReading(new VariableExpression("v1")), new ValueExpression(new IntValue(1))),
+                                    new CompoundStatement(new ForkStatement(new CompoundStatement(new AcquireStatement(new StringValue("cnt")),
+                                            new CompoundStatement(new HeapWriting(new StringValue("v1"), new ArithmeticExpression(new ValueExpression(new IntValue(10)), new HeapReading(new VariableExpression("v1")), '*')),
+                                                    new CompoundStatement(new PrintStatement(new HeapReading(new VariableExpression("v1"))),
+                                                            new ReleaseStatement(new StringValue("cnt")))))),
+                                            new CompoundStatement(new ForkStatement(new CompoundStatement(new AcquireStatement(new StringValue("cnt")),
+                                                    new CompoundStatement(new HeapWriting(new StringValue("v1"), new ArithmeticExpression(new HeapReading(new VariableExpression("v1")), new ValueExpression(new IntValue(10)), '*')),
+                                                            new CompoundStatement(new HeapWriting(new StringValue("v1"), new ArithmeticExpression(new HeapReading(new VariableExpression("v1")), new ValueExpression(new IntValue(2)), '*')),
+                                                                    new CompoundStatement(new PrintStatement(new HeapReading(new VariableExpression("v1"))),
+                                                                            new ReleaseStatement(new StringValue("cnt"))))))),
+                                                    new CompoundStatement(new AcquireStatement(new StringValue("cnt")),
+                                                            new CompoundStatement(new PrintStatement(new ArithmeticExpression(new HeapReading(new VariableExpression("v1")), new ValueExpression(new IntValue(1)), '-')),
+                                                                    new ReleaseStatement(new StringValue("cnt"))))))))));
+
+
     List<IStatement> examples = new ArrayList<>();
 
     //GUI elements
@@ -254,6 +277,8 @@ public class HelloController { //<=> view + main?
         examples.add(ex12);
         examples.add(ex13);
         examples.add(ex14);
+        examples.add(ex15);
+        examples.add(ex16);
 
         try {
             ex13.typecheck(new MyMap<>());

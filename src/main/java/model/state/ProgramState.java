@@ -15,13 +15,14 @@ public class ProgramState {
     private IMyMap<StringValue, BufferedReader> fileTable;
     private IHeap<Integer, IValue> heap;
     private ILockTable<Integer, Integer> lockTable;
+    private ISemaphoreTable<Integer, SemaphoreData> semaphoreTable;
     IStatement originalProgramState;
     private static int general_id=0;
     private int id;
 
     public ProgramState(IMyStack<IStatement> exeStack, IMyMap<String, IValue> symTable, IMyList<IValue> out, IStatement program,
                         IMyMap<StringValue, BufferedReader> fileTable, IHeap<Integer, IValue> heap,
-                        ILockTable<Integer, Integer> lockTable) {
+                        ILockTable<Integer, Integer> lockTable, ISemaphoreTable<Integer, SemaphoreData> semaphoreTable) {
         this.executionStack = exeStack;
         this.symbolTable = symTable;
         this.output = out;
@@ -29,19 +30,21 @@ public class ProgramState {
         this.fileTable = fileTable;
         this.heap = heap;
         this.lockTable = lockTable;
+        this.semaphoreTable = semaphoreTable;
         exeStack.push(program);
         this.id = getNextId();
     }
 
     public ProgramState(IMyStack<IStatement> exeStack, IMyMap<String, IValue> symTable, IMyList<IValue> out,
                         IMyMap<StringValue, BufferedReader> fileTable, IHeap<Integer, IValue> heap,
-                        ILockTable<Integer, Integer> lockTable) {
+                        ILockTable<Integer, Integer> lockTable, ISemaphoreTable<Integer, SemaphoreData> semaphoreTable) {
         this.executionStack = exeStack;
         this.symbolTable = symTable;
         this.output = out;
         this.fileTable = fileTable;
         this.heap = heap;
         this.lockTable = lockTable;
+        this.semaphoreTable = semaphoreTable;
         this.id = getNextId();
     }
 
@@ -51,6 +54,7 @@ public class ProgramState {
         this.output = p.output;
         this.heap = p.heap;
         this.lockTable = p.lockTable;
+        this.semaphoreTable = p.semaphoreTable;
     }
 
     public int getId() { return id; }
@@ -79,6 +83,8 @@ public class ProgramState {
         return lockTable;
     }
 
+    public ISemaphoreTable<Integer, SemaphoreData> getSemaphoreTable() { return semaphoreTable; }
+
     public void setExecutionStack(IMyStack<IStatement> exeStack) {
         this.executionStack = exeStack;
     }
@@ -98,6 +104,9 @@ public class ProgramState {
     public void setHeap(IHeap<Integer, IValue> heap) { this.heap = heap; }
 
     public void setLockTable(ILockTable<Integer, Integer> lockTable) { this.lockTable = lockTable; }
+
+    public void setSemaphoreTable(ISemaphoreTable<Integer, SemaphoreData> semaphoreTable) { this.semaphoreTable = semaphoreTable; }
+
     //setter for the heap?
 
     public IStatement getOriginalProgramState() {
@@ -115,7 +124,7 @@ public class ProgramState {
         return "Current program state: id#" + this.id + "\n" +
                 "Execution stack: \n" + exeStack + "\nSymbol table: \n" + symTable +
                 "\nOutput: \n" + out + "\nFile table: \n" + fileT + "\nHeap: \n" + Heap +
-                "\nLock table: \n" + lock
+                "\nLock table: \n" + lock + "\nSemaphore table: \n" + semaphoreTable
                 + "-------------------------------\n";
     }
 

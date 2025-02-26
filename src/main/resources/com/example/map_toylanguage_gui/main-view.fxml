@@ -17,7 +17,7 @@
 
 <AnchorPane prefHeight="546.0" prefWidth="656.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox layoutX="-2.0" prefHeight="546.0" prefWidth="656.0">
+      <VBox layoutX="-2.0" prefHeight="561.0" prefWidth="689.0">
          <children>
             <Label fx:id="programLabel" alignment="CENTER" prefHeight="25.0" prefWidth="659.0" text="Program" textAlignment="CENTER">
                <VBox.margin>
@@ -106,6 +106,15 @@
                                   <TableColumn fx:id="lockValueColumn" prefWidth="140.66665649414062" text="value" />
                                 </columns>
                               </TableView>
+                              <Label fx:id="semaphoreTableLabel" alignment="CENTER" prefHeight="17.0" prefWidth="371.0" text="Semaphore Table" GridPane.columnIndex="1" />
+                              <TableView fx:id="semaphoreTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <columns>
+                                  <TableColumn fx:id="semLocationColumn" prefWidth="75.0" text="location" />
+                                  <TableColumn fx:id="semNr1Column" prefWidth="75.0" text="nr1" />
+                                    <TableColumn fx:id="semNr2Column" prefWidth="75.0" text="nr2" />
+                                    <TableColumn fx:id="semProgramListColumn" prefWidth="118.666748046875" text="List of Programs" />
+                                </columns>
+                              </TableView>
                            </children>
                            <padding>
                               <Insets left="10.0" />
@@ -118,7 +127,7 @@
                   </VBox>
                </bottom>
             </BorderPane>
-            <Button fx:id="runOneStepButton" mnemonicParsing="false" onAction="#runOneStepForAll" prefHeight="25.0" prefWidth="611.0" text="run one step">
+            <Button fx:id="runOneStepButton" mnemonicParsing="false" onAction="#runOneStepForAll" prefHeight="25.0" prefWidth="684.0" text="run one step">
                <VBox.margin>
                   <Insets left="5.0" right="5.0" top="5.0" />
                </VBox.margin></Button>
