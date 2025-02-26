@@ -175,6 +175,56 @@ public class HelloController { //<=> view + main?
                                                             new VariableExpression("v"), new ValueExpression(new IntValue(10)), '*'))))))
                         )))));
 
+    IStatement ex13 = new CompoundStatement(new VarDeclarationStatement("a", new RefType(0, new IntType())),
+        new CompoundStatement(new HeapAllocation(new StringValue("a"), new ValueExpression(new IntValue(20))),
+            new CompoundStatement(new ForStatement(new StringValue("v"), new ValueExpression(new IntValue(0)),
+                    new ValueExpression(new IntValue(3)),
+                    new ArithmeticExpression(new VariableExpression("v"), new ValueExpression(new IntValue(1)), '+'),
+                            new ForkStatement(new CompoundStatement(new PrintStatement(new VariableExpression("v")),
+                                    new AssignmentStatement("v", new ArithmeticExpression(new VariableExpression("v"),
+                                            new HeapReading(new VariableExpression("a")), '*'))))),
+                new PrintStatement(new HeapReading(new VariableExpression("a"))))));
+
+    IStatement ex14 = new CompoundStatement(new VarDeclarationStatement("v1", new RefType(0, new IntType())),
+        new CompoundStatement(new VarDeclarationStatement("v2", new RefType(0, new IntType())),
+            new CompoundStatement(new VarDeclarationStatement("x", new IntType()),
+                new CompoundStatement(new VarDeclarationStatement("q", new IntType()),
+                    new CompoundStatement(new HeapAllocation(new StringValue("v1"), new ValueExpression(new IntValue(20))),
+                        new CompoundStatement(new HeapAllocation(new StringValue("v2"), new ValueExpression(new IntValue(30))),
+                            new CompoundStatement(new NewLockStatement("x"),
+                                new CompoundStatement(new ForkStatement(new CompoundStatement(
+                                        new ForkStatement(new CompoundStatement(new LockStatement("x"),
+                                                new CompoundStatement(new HeapWriting(new StringValue("v1"),
+                                                        new ArithmeticExpression(new HeapReading(new VariableExpression("v1")), new ValueExpression(new IntValue(1)), '-')),
+                                                        new UnlockStatement("x")))),
+                                        new CompoundStatement(new LockStatement("x"),
+                                            new CompoundStatement(new HeapWriting(new StringValue("v1"),
+                                                new ArithmeticExpression(new HeapReading(new VariableExpression("v1")), new ValueExpression(new IntValue(10)), '*')),
+                                                    new UnlockStatement("x"))))),
+                                        new CompoundStatement(new NewLockStatement("q"),
+                                            new CompoundStatement(new ForkStatement(new CompoundStatement(
+                                                    new ForkStatement(new CompoundStatement(new LockStatement("q"),
+                                                            new CompoundStatement(new HeapWriting(new StringValue("v2"),
+                                                                    new ArithmeticExpression(new HeapReading(new VariableExpression("v2")), new ValueExpression(new IntValue(5)), '+')),
+                                                                    new UnlockStatement("q")))),
+                                                    new CompoundStatement(new LockStatement("q"),
+                                                        new CompoundStatement(new HeapWriting(new StringValue("v2"),
+                                                                new ArithmeticExpression(new HeapReading(new VariableExpression("v2")),
+                                                                        new ValueExpression(new IntValue(10)), '*')),
+                                                                new UnlockStatement("q"))))), //gata fork albastru
+                                                    new CompoundStatement(new NoOperation(),
+                                                        new CompoundStatement(new NoOperation(),
+                                                            new CompoundStatement(new NoOperation(),
+                                                                new CompoundStatement(new NoOperation(),
+                                                                    new CompoundStatement(new LockStatement("x"),
+                                                                        new CompoundStatement(new PrintStatement(new HeapReading(new VariableExpression("v1"))),
+                                                                            new CompoundStatement(new UnlockStatement("x"),
+                                                                                new CompoundStatement(new LockStatement("q"),
+                                                                                    new CompoundStatement(new PrintStatement(new HeapReading(new VariableExpression("v2"))),
+                                                                                        new UnlockStatement("q"))))))))))
+                                                    )
+                                                    ))
+                                )))))));
 
     List<IStatement> examples = new ArrayList<>();
 
@@ -202,9 +252,12 @@ public class HelloController { //<=> view + main?
         examples.add(ex10);
         examples.add(ex11);
         examples.add(ex12);
+        examples.add(ex13);
+        examples.add(ex14);
 
         try {
-            ex12.typecheck(new MyMap<>());
+            ex13.typecheck(new MyMap<>());
+            ex14.typecheck(new MyMap<>());
         } catch (MyException e) {
             System.err.println(e.getMessage());
         }

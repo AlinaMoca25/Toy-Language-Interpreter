@@ -26,6 +26,7 @@ import model.values.IValue;
 import repository.IRepository;
 import repository.Repository;
 import view.heapView;
+import view.lockView;
 import view.symTableView;
 
 import java.awt.event.MouseEvent;
@@ -80,10 +81,19 @@ public class MainController {
     @FXML
     private Button runOneStepButton; //h
 
+    @FXML
+    private TableView<lockView> lockTable;
+
+    @FXML
+    private TableColumn<lockView, String> lockLocationColumn;
+
+    @FXML
+    private TableColumn<lockView, String> lockValueColumn;
+
     public void initialize() {
 
         IMyStack<IStatement> stack = new MyStack<>(); stack.push(this.statement);
-        ProgramState prgState = new ProgramState(stack, new MyMap<>(), new MyList<>(), new MyMap<>(), new MyHeap<>());
+        ProgramState prgState = new ProgramState(stack, new MyMap<>(), new MyList<>(), new MyMap<>(), new MyHeap<>(), new LockTable<>());
         IRepository repo = new Repository("out.txt"); repo.add(prgState);
 
         this.controller = new Controller(repo);
@@ -93,6 +103,8 @@ public class MainController {
         heapTableVarColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
         symTableVarNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         symTableVarValColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
+        lockLocationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
+        lockValueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
 
 //        prgStatesIdList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 //
@@ -133,7 +145,7 @@ public class MainController {
     }
 
     @FXML
-    protected void selectProgramState() {
+    protected void selectProgramState() throws MyException {
         if(controller.getNrOfProgramStates() > 0) {
             updateAll();
         }
@@ -213,13 +225,25 @@ public class MainController {
         symTable.setItems(symList);
     }
 
-    private void updateAll() {
+    private void setLockTable() throws MyException {
+        ObservableList<lockView> lockList = FXCollections.observableArrayList();
+        ProgramState state = getCurrentState();
+        ILockTable<Integer, Integer> lock = state.getLockTable();
+
+        for(Integer address : lock.getContent().keySet()) {
+            lockList.add(new lockView(address, lock.get(address)));
+        }
+        lockTable.setItems(lockList);
+    }
+
+    private void updateAll() throws MyException {
         setHeapTable();
         setOutList();
         setFileTable();
         setProgramStates();
         setSymTable();
         setExeStack();
+        setLockTable();
     }
 
 }

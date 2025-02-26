@@ -24,7 +24,7 @@ public class ForkStatement implements IStatement {
         IMyMap<String, IValue> newSymTable = new MyMap<>();
         newSymTable = state.getSymbolTable().deepCopy();
         ProgramState newState = new ProgramState(newStack, newSymTable, state.getOutput(),
-                state.getFileTable(), state.getHeap());
+                state.getFileTable(), state.getHeap(), state.getLockTable());
         return newState;
         //return state;
     }

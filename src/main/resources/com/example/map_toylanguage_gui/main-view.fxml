@@ -9,32 +9,35 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="505.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="546.0" prefWidth="656.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox layoutX="7.0" prefHeight="400.0" prefWidth="587.0">
+      <VBox layoutX="-2.0" prefHeight="546.0" prefWidth="656.0">
          <children>
-            <Label fx:id="programLabel" alignment="CENTER" prefHeight="25.0" prefWidth="600.0" text="Program" textAlignment="CENTER">
+            <Label fx:id="programLabel" alignment="CENTER" prefHeight="25.0" prefWidth="659.0" text="Program" textAlignment="CENTER">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
             </Label>
-            <TextField fx:id="nrOfPrgStatesTextField" />
-            <BorderPane prefHeight="310.0" prefWidth="600.0">
+            <TextField fx:id="nrOfPrgStatesTextField" prefHeight="25.0" prefWidth="453.0" />
+            <BorderPane prefHeight="442.0" prefWidth="656.0">
                <center>
                   <HBox alignment="CENTER" prefHeight="147.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                      <children>
-                        <TableView fx:id="heapTable" pickOnBounds="false" prefHeight="113.0" prefWidth="150.0">
+                        <TableView fx:id="heapTable" pickOnBounds="false" prefHeight="83.0" prefWidth="173.0">
                           <columns>
-                            <TableColumn fx:id="heapTableAddrColumn" prefWidth="72.66665649414062" text="address" />
-                            <TableColumn fx:id="heapTableVarColumn" prefWidth="76.0" text="variable" />
+                            <TableColumn fx:id="heapTableAddrColumn" prefWidth="81.99996948242188" text="address" />
+                            <TableColumn fx:id="heapTableVarColumn" prefWidth="90.00003051757812" text="variable" />
                           </columns>
                         </TableView>
-                        <ListView fx:id="outList" prefHeight="113.0" prefWidth="150.0" />
+                        <ListView fx:id="outList" prefHeight="83.0" prefWidth="167.0" />
                         <ListView fx:id="fileTable" prefHeight="113.0" prefWidth="150.0" />
-                        <ListView fx:id="prgStatesIdList" onMousePressed="#selectProgramState" prefHeight="113.0" prefWidth="100.0" />
+                        <ListView fx:id="prgStatesIdList" onMousePressed="#selectProgramState" prefHeight="83.0" prefWidth="133.0" />
                      </children>
                   </HBox>
                </center>
@@ -64,7 +67,7 @@
                   </HBox>
                </top>
                <bottom>
-                  <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                  <VBox prefHeight="295.0" prefWidth="656.0" BorderPane.alignment="CENTER">
                      <children>
                         <HBox prefHeight="19.0" prefWidth="600.0">
                            <children>
@@ -86,6 +89,28 @@
                               <Insets left="5.0" right="5.0" />
                            </VBox.margin>
                         </HBox>
+                        <GridPane prefHeight="159.0" prefWidth="656.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="323.33331298828125" minWidth="10.0" prefWidth="274.6666259765625" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="381.3333740234375" minWidth="10.0" prefWidth="381.3333740234375" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints maxHeight="57.666690826416016" minHeight="0.0" prefHeight="21.000032424926758" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="126.0" minHeight="10.0" prefHeight="104.99996757507324" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label fx:id="LockTableLable" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="333.0" text="Lock Table" />
+                              <TableView fx:id="lockTable" prefHeight="105.0" prefWidth="255.0" GridPane.rowIndex="1">
+                                <columns>
+                                  <TableColumn fx:id="lockLocationColumn" prefWidth="132.0" text="location" />
+                                  <TableColumn fx:id="lockValueColumn" prefWidth="140.66665649414062" text="value" />
+                                </columns>
+                              </TableView>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </GridPane>
                      </children>
                      <padding>
                         <Insets top="10.0" />

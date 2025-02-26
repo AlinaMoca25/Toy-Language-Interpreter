@@ -14,29 +14,34 @@ public class ProgramState {
     private IMyList<IValue> output;
     private IMyMap<StringValue, BufferedReader> fileTable;
     private IHeap<Integer, IValue> heap;
+    private ILockTable<Integer, Integer> lockTable;
     IStatement originalProgramState;
     private static int general_id=0;
     private int id;
 
     public ProgramState(IMyStack<IStatement> exeStack, IMyMap<String, IValue> symTable, IMyList<IValue> out, IStatement program,
-                        IMyMap<StringValue, BufferedReader> fileTable, IHeap<Integer, IValue> heap) {
+                        IMyMap<StringValue, BufferedReader> fileTable, IHeap<Integer, IValue> heap,
+                        ILockTable<Integer, Integer> lockTable) {
         this.executionStack = exeStack;
         this.symbolTable = symTable;
         this.output = out;
         this.originalProgramState = program;
         this.fileTable = fileTable;
         this.heap = heap;
+        this.lockTable = lockTable;
         exeStack.push(program);
         this.id = getNextId();
     }
 
     public ProgramState(IMyStack<IStatement> exeStack, IMyMap<String, IValue> symTable, IMyList<IValue> out,
-                        IMyMap<StringValue, BufferedReader> fileTable, IHeap<Integer, IValue> heap) {
+                        IMyMap<StringValue, BufferedReader> fileTable, IHeap<Integer, IValue> heap,
+                        ILockTable<Integer, Integer> lockTable) {
         this.executionStack = exeStack;
         this.symbolTable = symTable;
         this.output = out;
         this.fileTable = fileTable;
         this.heap = heap;
+        this.lockTable = lockTable;
         this.id = getNextId();
     }
 
@@ -45,6 +50,7 @@ public class ProgramState {
         this.symbolTable = p.symbolTable;
         this.output = p.output;
         this.heap = p.heap;
+        this.lockTable = p.lockTable;
     }
 
     public int getId() { return id; }
@@ -69,6 +75,10 @@ public class ProgramState {
         return heap;
     }
 
+    public ILockTable<Integer, Integer> getLockTable() {
+        return lockTable;
+    }
+
     public void setExecutionStack(IMyStack<IStatement> exeStack) {
         this.executionStack = exeStack;
     }
@@ -85,6 +95,9 @@ public class ProgramState {
         this.fileTable = fileTable;
     }
 
+    public void setHeap(IHeap<Integer, IValue> heap) { this.heap = heap; }
+
+    public void setLockTable(ILockTable<Integer, Integer> lockTable) { this.lockTable = lockTable; }
     //setter for the heap?
 
     public IStatement getOriginalProgramState() {
@@ -98,9 +111,11 @@ public class ProgramState {
         String out = output.toString();
         String fileT = fileTable.toString();
         String Heap = heap.toString();
+        String lock = lockTable.toString();
         return "Current program state: id#" + this.id + "\n" +
                 "Execution stack: \n" + exeStack + "\nSymbol table: \n" + symTable +
-                "\nOutput: \n" + out + "\nFile table: \n" + fileT + "\nHeap: \n" + Heap
+                "\nOutput: \n" + out + "\nFile table: \n" + fileT + "\nHeap: \n" + Heap +
+                "\nLock table: \n" + lock
                 + "-------------------------------\n";
     }
 
